@@ -10,6 +10,12 @@ runEventListeners();
 
 function runEventListeners() {
   form.addEventListener("submit", search);
+  clearButton.addEventListener("click", clear);
+}
+
+function clear() {
+  searchInput.value = "";
+  Array.from(imageListWrapper.children).forEach((child) => child.remove());
 }
 
 function search(e) {
@@ -22,8 +28,33 @@ function search(e) {
     },
   })
     .then((res) => res.json())
-    .then((data) => console.log(data))
-    .then((err) => console.log(err));
+    .then((data) => {
+      Array.from(data.results).forEach((image) => {
+        console.log(image.urls.small);
+        addImageToUI(image.urls.small);
+      });
+    })
+    .catch((err) => console.log(err));
 
   e.preventDefault();
+}
+
+function addImageToUI(url) {
+  /*
+<div class="card">
+     <img src="" alt="">
+</div>           
+*/
+
+  console.log(imageListWrapper);
+  const div = document.createElement("div");
+  div.className = "card";
+
+  const img = document.createElement("img");
+  img.setAttribute("src", url);
+  img.height = "400";
+  img.width = "400";
+
+  div.append(img);
+  imageListWrapper.append(div);
 }
