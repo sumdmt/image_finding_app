@@ -1,1 +1,1 @@
-# image_finding_app
+# Image Finding App
